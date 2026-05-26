@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ReplyRight — AI Review Replies for Small Businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --cream: #ffffff;
+    --accent: #e8521a;
+    --accent2: #f7c948;
+    --muted: #b0ada6;
+    --card: #1a1a1a;
+    --border: #333333;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5vw;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.03em;
+  }
+
+  .logo span { color: var(--accent); }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--white); }
+
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--white) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.85rem !important;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 5vw 5rem;
+    position: relative;
+    overflow: hidden;
+    background-color: #0a0a0a;
+    color: #ffffff;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(232,82,26,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: 30%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(247,201,72,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    max-width: 800px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.65;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-form {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .hero-form input {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.9rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    width: 300px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .hero-form input:focus { border-color: var(--accent); }
+  .hero-form input::placeholder { color: var(--muted); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 0.9rem 1.8rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover { background: #d44815; transform: translateY(-1px); }
+
+  .hero-note {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .stat-item { }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--white);
+  }
+
+  .stat-num span { color: var(--accent); }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--accent);
+    padding: 0.7rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-flex;
+    gap: 3rem;
+    animation: ticker 20s linear infinite;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* HOW IT WORKS */
+  .section {
+    padding: 6rem 5vw;
+    background-color: #0a0a0a;
+    color: #ffffff;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    max-width: 600px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .step:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 4rem;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .step p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* DEMO CARD */
+  .demo-section {
+    padding: 4rem 5vw 6rem;
+    background: #111111;
+    color: #ffffff;
+  }
+
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+    max-width: 900px;
+  }
+
+  @media (max-width: 640px) {
+    .demo-grid { grid-template-columns: 1fr; }
+  }
+
+  .review-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .review-card .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .stars { color: var(--accent2); font-size: 1rem; margin-bottom: 0.5rem; }
+
+  .review-author {
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .review-text {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .reply-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .reply-card::before {
+    content: '⚡ AI Generated';
+    position: absolute;
+    top: -10px; right: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .reply-card .label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+
+  .reply-text { font-size: 0.88rem; line-height: 1.6; color: #d8d5cf; }
+
+  .time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #1a2a1a;
+    border: 1px solid #2a4a2a;
+    color: #5dba6f;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    max-width: 800px;
+  }
+
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .price-card:hover { transform: translateY(-3px); }
+
+  .price-card.featured {
+    border-color: var(--accent);
+    position: relative;
+  }
+
+  .price-card.featured::before {
+    content: 'Most Popular';
+    position: absolute;
+    top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+    white-space: nowrap;
+  }
+
+  .price-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .price-amount sup { font-size: 1.2rem; vertical-align: super; }
+  .price-amount span { font-size: 1rem; color: var(--muted); font-weight: 400; }
+
+  .price-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.8rem 0 1.5rem;
+    line-height: 1.5;
+  }
+
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .price-features li {
+    font-size: 0.88rem;
+    color: #c8c5bf;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .price-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+
+  .btn-outline {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--accent); background: rgba(232,82,26,0.08); }
+
+  .btn-filled {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    color: var(--white);
+    padding: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-filled:hover { background: #d44815; }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+
+  .testi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem;
+  }
+
+  .testi-quote {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #d8d5cf;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .testi-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: white;
+  }
+
+  .testi-name { font-weight: 500; font-size: 0.9rem; }
+  .testi-biz { font-size: 0.78rem; color: var(--muted); }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 6rem 5vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(232,82,26,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: -0.04em;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.05;
+  }
+
+  .cta-section p {
+    color: var(--muted);
+    max-width: 400px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-form input {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.9rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    width: 280px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .cta-form input:focus { border-color: var(--accent); }
+  .cta-form input::placeholder { color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer p { font-size: 0.82rem; color: var(--muted); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SUCCESS STATE */
+  .success-msg {
+    display: none;
+    background: #1a2a1a;
+    border: 1px solid #2a4a2a;
+    color: #5dba6f;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  html, body { background-color: #0a0a0a !important; color: #ffffff !important; }
+  h1, h2, h3, h4, .hero h1, .section-title { color: #ffffff !important; }
+  .stat-num { color: #ffffff !important; }
+  .hero-sub, .stat-label { color: #b0ada6 !important; }
+  .step p, .price-desc, .review-text, .testi-quote { color: #c8c5bf !important; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Reply<span>Right</span></div>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">⭐ AI Review Management · Google · Yelp · Facebook · TripAdvisor</div>
+  <h1>One dashboard.<br/><em>All</em> your reviews.<br/>Zero effort.</h1>
+  <p class="hero-sub">ReplyRight automatically responds to your reviews across Google, Yelp, Facebook, and TripAdvisor — with smart, on-brand AI replies in seconds. One tool to rule them all.</p>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">94<span>%</span></div>
+      <div class="stat-label">of customers read reviews before visiting</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$29</div>
+      <div class="stat-label">per month to get started</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">7</div>
+      <div class="stat-label">day free trial, no card needed</div>
+    </div>
+  </div>
+
+  <div class="hero-form">
+    <script async data-uid="55a5be3f6e" src="https://replayright.kit.com/55a5be3f6e/index.js"></script>
+  </div>
+  <p class="hero-note">7 days free · No credit card required · Cancel anytime</p>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    ⭐ Restaurants &nbsp;·&nbsp; Salons &nbsp;·&nbsp; Auto Shops &nbsp;·&nbsp; Gyms &nbsp;·&nbsp; Clinics &nbsp;·&nbsp; Retail Stores &nbsp;·&nbsp; Law Firms &nbsp;·&nbsp; Real Estate Agents &nbsp;·&nbsp; Dentists &nbsp;·&nbsp; Plumbers &nbsp;·&nbsp;
+    ⭐ Restaurants &nbsp;·&nbsp; Salons &nbsp;·&nbsp; Auto Shops &nbsp;·&nbsp; Gyms &nbsp;·&nbsp; Clinics &nbsp;·&nbsp; Retail Stores &nbsp;·&nbsp; Law Firms &nbsp;·&nbsp; Real Estate Agents &nbsp;·&nbsp; Dentists &nbsp;·&nbsp; Plumbers &nbsp;·&nbsp;
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">Set up in 2 minutes. Replies sent forever.</h2>
+
+  <div class="steps">
+    <div class="step fade-in">
+      <div class="step-num">01</div>
+      <h3>Connect Your Platforms</h3>
+      <p>Link Google, Yelp, Facebook & TripAdvisor in one click each. We pull in all your reviews from every platform automatically.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">02</div>
+      <h3>AI Crafts Your Reply</h3>
+      <p>Our AI reads each review and writes a personalized, on-brand response that sounds like you — not a robot. Works across all platforms.</p>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">03</div>
+      <h3>Review & Post Everywhere</h3>
+      <p>Approve with one click or let auto-post handle it across all platforms simultaneously. One dashboard, total control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo-section">
+  <div class="section-label">See it in action</div>
+  <h2 class="section-title fade-in">Real review. Real reply. <br/>2 seconds flat.</h2>
+
+  <div class="demo-grid">
+    <div class="review-card fade-in">
+      <div class="label">📥 Yelp Review</div>
+      <div class="stars">★★★☆☆</div>
+      <div class="review-author">Mike T. — Yelp Review</div>
+      <p class="review-text">"Food was decent but service was slow. Waited 25 mins for our appetizers. The pasta was good though. Might come back but not sure yet."</p>
+    </div>
+    <div class="reply-card fade-in">
+      <div class="label">💬 ReplyRight Response</div>
+      <p class="reply-text">Hi Mike, thank you for taking the time to share your feedback! We're sorry to hear your wait time wasn't up to our usual standard — that's not the experience we aim to deliver. We're glad the pasta hit the mark though! We'd love a chance to make it right on your next visit. Please ask for our manager and we'll take great care of you. 🙏</p>
+      <div class="time-badge">⚡ Posted to Yelp in 1.8 seconds</div>
+    </div>
+  </div>
+
+  <!-- Platform badges -->
+  <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:2rem;">
+    <div style="background:#1a1a1a; border:1px solid #333; border-radius:6px; padding:0.5rem 1rem; font-size:0.82rem; color:#fff; display:flex; align-items:center; gap:0.4rem;">🔵 Google</div>
+    <div style="background:#1a1a1a; border:1px solid #333; border-radius:6px; padding:0.5rem 1rem; font-size:0.82rem; color:#fff; display:flex; align-items:center; gap:0.4rem;">🔴 Yelp</div>
+    <div style="background:#1a1a1a; border:1px solid #333; border-radius:6px; padding:0.5rem 1rem; font-size:0.82rem; color:#fff; display:flex; align-items:center; gap:0.4rem;">🔵 Facebook</div>
+    <div style="background:#1a1a1a; border:1px solid #333; border-radius:6px; padding:0.5rem 1rem; font-size:0.82rem; color:#aaa; display:flex; align-items:center; gap:0.4rem;">🟢 TripAdvisor <span style="font-size:0.7rem; color:#e8521a; margin-left:0.3rem;">Coming Soon</span></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="section-label">Early users love it</div>
+  <h2 class="section-title fade-in">Built for busy owners,<br/>not marketing teams.</h2>
+
+  <div class="testimonials">
+    <div class="testi-card fade-in">
+      <p class="testi-quote">"I used to ignore my Google and Yelp reviews — no time. ReplyRight handles all platforms at once. My rating went up half a star in 3 weeks."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#e8521a;">JR</div>
+        <div>
+          <div class="testi-name">James R.</div>
+          <div class="testi-biz">Pizza Restaurant, Chicago</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-in">
+      <p class="testi-quote">"My salon gets reviews on Google, Yelp and Facebook. ReplyRight monitors all three and replies instantly. Clients notice we always respond now."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#f7c948; color:#000;">SL</div>
+        <div>
+          <div class="testi-name">Sandra L.</div>
+          <div class="testi-biz">Hair Salon, Miami</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card fade-in">
+      <p class="testi-quote">"Setup took 2 minutes across all platforms. Every Google and Yelp review gets replied to within the hour. My competitors are still ignoring theirs."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#3a7bfd;">DK</div>
+        <div>
+          <div class="testi-name">David K.</div>
+          <div class="testi-biz">Auto Repair Shop, Dallas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" style="background:#0e0e0e;">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title fade-in">Simple pricing.<br/>No surprises.</h2>
+
+  <div class="pricing-grid">
+    <div class="price-card fade-in">
+      <div class="price-name">Starter</div>
+      <div class="price-amount"><sup>$</sup>29<span>/mo</span></div>
+      <p class="price-desc">Perfect for single-location businesses just getting started.</p>
+      <ul class="price-features">
+        <li>Up to 50 review replies/mo</li>
+        <li>Google &amp; Yelp integration</li>
+        <li>3 tone presets</li>
+        <li>Reply history dashboard</li>
+        <li>Email support</li>
+      </ul>
+      <button class="btn-outline" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+    </div>
+    <div class="price-card featured fade-in">
+      <div class="price-name">Growth</div>
+      <div class="price-amount"><sup>$</sup>49<span>/mo</span></div>
+      <p class="price-desc">For businesses serious about their online reputation.</p>
+      <ul class="price-features">
+        <li>Unlimited review replies</li>
+        <li>Google, Yelp &amp; Facebook integration</li>
+        <li>Custom tone & brand voice</li>
+        <li>Auto-post option</li>
+        <li>Priority support</li>
+        <li>Review analytics</li>
+      </ul>
+      <button class="btn-filled" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist →</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / WAITLIST -->
+<section class="cta-section" id="waitlist">
+  <h2 class="fade-in">Be first.<br/>Get 7 day free trial.</h2>
+  <p class="fade-in">Join the waitlist today and get 7 days free when we launch. No credit card needed.</p>
+
+  <div class="cta-form fade-in">
+    <script async data-uid="55a5be3f6e" src="https://replayright.kit.com/55a5be3f6e/index.js"></script>
+  </div>
+  <p style="margin-top:1rem; font-size:0.8rem; color:var(--muted);">Already 200+ business owners on the waitlist</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Reply<span>Right</span></div>
+  <p>© 2026 ReplyRight. Built for American small businesses.</p>
+  <p style="color:var(--muted); font-size:0.8rem;">hello@replyright.ai</p>
+</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Waitlist
+  function joinWaitlist(source) {
+    const emailEl = document.getElementById(source === 'hero' ? 'hero-email' : 'cta-email');
+    const successEl = document.getElementById(source === 'hero' ? 'hero-success' : 'cta-success');
+    const email = emailEl.value.trim();
+
+    if (!email || !email.includes('@')) {
+      emailEl.style.borderColor = '#e8521a';
+      emailEl.placeholder = 'Enter a valid email';
+      setTimeout(() => {
+        emailEl.style.borderColor = '';
+        emailEl.placeholder = 'your@email.com';
+      }, 2000);
+      return;
+    }
+
+    successEl.style.display = 'block';
+    emailEl.value = '';
+    emailEl.placeholder = 'Thanks! We\'ll be in touch.';
+  }
+</script>
+</body>
+</html>
